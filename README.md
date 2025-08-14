@@ -159,9 +159,37 @@ The API handles various error scenarios:
 - Consider implementing rate limiting for production use
 - Memory usage scales with page complexity
 
+## CORS Configuration
+
+The API is configured to accept requests from any domain with the following CORS headers:
+
+- `Access-Control-Allow-Origin: *`
+- `Access-Control-Allow-Methods: GET, POST, OPTIONS`
+- `Access-Control-Allow-Headers: Content-Type, Authorization`
+
+### Cross-Origin Usage Example
+
+```javascript
+// From any external domain
+fetch('https://your-domain.com/api/screenshot', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ url: 'https://example.com' }),
+})
+.then(response => response.json())
+.then(data => {
+  if (data.success) {
+    console.log('Screenshot captured:', data.screenshot);
+  }
+});
+```
+
 ## Security Notes
 
 - Only public URLs are supported
 - Input validation prevents malicious URLs
+- CORS is enabled for all origins (consider restricting in production)
 - No authentication required (add if needed for production)
-- Consider implementing CORS policies
+- Consider implementing rate limiting for production use
